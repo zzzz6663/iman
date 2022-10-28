@@ -38,7 +38,8 @@ class StaffController extends Controller
            });
         }
         $staffs = $staffs->whereIn('role', ['admin'])->latest()->paginate(10);
-        return view('admin.staff.all', compact(['staffs']));
+        $company=User::where('role','company')->first();
+        return view('admin.staff.all', compact(['staffs','company']));
     }
 
     /**
@@ -126,6 +127,32 @@ class StaffController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function edit_company(Request $request)
+    {
+        $company=User::whereRole('company')->first();
+        // dd($request->method());
+        if($request->method()=='POST'){
+            $data=$request->validate([
+                'name'=>'required|min:3',
+                'person'=>'required|min:3',
+                'phone'=>'required|min:3|unique:users,phone,'.$company->id,
+                'tax'=>'required|min:3|unique:users,tax,'.$company->id,
+                'email'=>'required|unique:users,email,'.$company->id,
+                'logo'=>'nullable',
+            ]);
+              if ($request->hasFile('logo')) {
+                $image = $request->file('logo');
+                $name_img = 'logo_' . $company->id . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('/media/company/'), $name_img);
+                $data['logo'] = $name_img;
+              }
+              $company->update($data);
+            alert()->success('    Company Updated' );
+            return redirect()->route('staff.index');
+        }
+        return view('admin.staff.edit_company',compact(['company']));
+
     }
 
 

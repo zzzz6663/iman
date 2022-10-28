@@ -84,7 +84,7 @@
                       <td>{{ $branch->tax }}</td>
                       <td>{{ $branch->country?$branch->country->en_name:'' }}</td>
                       <td>
-                        <a href="{{ asset('/media/branch/'.$branch->logo) }}">Click</a>
+                        <a href="{{ asset('/media/branch/'.$branch->logo) }}">Logo</a>
                       </td>
                       <td>
                         <a href="{{ route('branch.edit',$branch->id) }}">Edit</a>

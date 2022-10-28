@@ -23,29 +23,32 @@
     <div class="card-body ">
         <div class="row row-cards">
             <div class="col-xl-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label"> Name</label>
+                                <input type="text" name="name" class="form-control"  value="{{ old('name') }}"  placeholder="Enter  Name">
+                              </div>
 
-                  <div class="mb-3">
-                    <label class="form-label"> Name</label>
-                    <input type="text" name="name" class="form-control"  value="{{ old('name') }}"  placeholder="Enter  Name">
-                  </div>
+                              <div class="mb-3">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" name="lastname" class="form-control"  value="{{ old('lastname') }}"  placeholder="Enter  Last Name">
+                              </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">User Name</label>
+                                <input type="text" name="username" class="form-control"  value="{{ old('username') }}"  placeholder="Enter User Name">
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="text" name="password" class="form-control"  value="{{ old('password') }}"  placeholder="Enter Password ">
+                              </div>
+                        </div>
+                    </div>
 
-                  <div class="mb-3">
-                    <label class="form-label">Last Name</label>
-                    <input type="text" name="lastname" class="form-control"  value="{{ old('lastname') }}"  placeholder="Enter  Last Name">
-                  </div>
-
-                  <div class="mb-3">
-                    <label class="form-label">User Name</label>
-                    <input type="text" name="username" class="form-control"  value="{{ old('username') }}"  placeholder="Enter User Name">
-                  </div>
 
 
-
-
-                  <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="text" name="password" class="form-control"  value="{{ old('password') }}"  placeholder="Enter Password ">
-                  </div>
             </div>
         </div>
     </div>

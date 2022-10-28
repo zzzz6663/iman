@@ -4,6 +4,11 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
+            <img src="{{ auth()->user()->logo_img() }}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+            <br>
+        </h1>
+        <h1 class="navbar-brand navbar-brand-autodark">
+
             <a href="#">
                 UserName:
                 {{ auth()->user()->username }}

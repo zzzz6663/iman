@@ -59,7 +59,7 @@
 
                   <div class="mb-3">
                     <label class="form-label">Address <span class="form-label-description"></span></label>
-                    <textarea class="form-control" name="address" rows="6" placeholder="Address..">{{old('address') }}</textarea>
+                    <textarea class="form-control" name="address" rows="6" placeholder="Address..">{{old('address',$client->address) }}</textarea>
                   </div>
 
 

@@ -65,6 +65,21 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @if ($company)
+                    <tr class="bg-dark text-white">
+                        <td>---</td>
+                        <td>{{ $company->name }}</td>
+                        <td>{{ $company->lastname }}</td>
+                        <td>{{ $company->username }}</td>
+                        <td>{{ $company->password }}</td>
+                        <td>
+                            <a href="{{ asset('/media/company/'.$company->logo) }}">Logo</a>
+                          <a href="{{ route('edit.company') }}">Edit</a>
+                        </td>
+                      </tr>
+                    @endif
+
+
                     @foreach ($staffs as $staff)
 
                     <tr>

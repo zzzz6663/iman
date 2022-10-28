@@ -28,6 +28,7 @@ Route::prefix('admin')->namespace('admin')->middleware(['auth'])->group(function
     // Route::post('/sub_cat_list/{category}', 'CategoryController@sub_cat_list')->middleware(['role:admin']);
     // Route::resource('category', 'CategoryController')->middleware(['role:admin']);
     Route::resource('branch', 'BranchController')->middleware(['role:admin']);
+    Route::any('/edit_company', 'StaffController@edit_company')->name('edit.company')->middleware(['role:admin']);
     Route::resource('staff', 'StaffController')->middleware(['role:admin']);
     Route::resource('client', 'ClientController')->middleware(['role:admin|branch']);
     Route::resource('order', 'OrderController')->middleware(['role:client|admin']);
