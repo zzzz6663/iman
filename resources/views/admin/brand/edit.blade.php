@@ -28,7 +28,7 @@
                             <div class="mb-3">
                                 <label class="form-label"> Name</label>
                                 <input type="text" name="name" class="form-control"  value="{{ old('name',$brand->name) }}"  placeholder="Enter  Name">
-                              </div>
+                               </div>
                         </div>
                     </div>
             </div>
