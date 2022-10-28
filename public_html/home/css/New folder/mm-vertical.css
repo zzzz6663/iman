@@ -1,0 +1,100 @@
+.sidebar-nav {
+    background: #fff;
+}
+.sidebar-nav ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background: #fff;
+}
+
+.sidebar-nav .metismenu {
+    background: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.sidebar-nav .metismenu li + li {
+  margin-top: 5px;
+}
+
+.sidebar-nav .metismenu li:first-child {
+  margin-top: 5px;
+}
+.sidebar-nav .metismenu li:last-child {
+  margin-bottom: 5px;
+}
+
+
+.sidebar-nav .metismenu > li {
+    /*-webkit-box-flex: 1;
+    -ms-flex: 1 1 0%;
+    flex: 1 1 0%;*/
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    position: relative;
+    /*border-bottom: 1px solid #f5f5f5;*/
+    border:  none;
+}
+.sidebar-nav .metismenu a {
+    position: relative;
+    display: block;
+    padding: 11px 13px;
+    /*color: #adb5bd;*/
+    color: #000;
+    font-weight: 500;
+    outline-width: 0;
+    transition: all .3s ease-out;
+}
+.sidebar-nav .metismenu a:hover{
+    /*color: #0EB582;*/
+}
+
+.sidebar-nav .metismenu ul{
+    margin-right: 20px;
+}
+.sidebar-nav .metismenu ul a {
+    font-weight: normal;
+    padding: 10px 15px 10px 30px;
+    position: relative;
+}
+.sidebar-nav .metismenu ul a:hover {
+    font-weight: bold;
+}
+/*.sidebar-nav .metismenu ul a:hover:after{
+    content: "";
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #00a472;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -3px;
+}*/
+.sidebar-nav .metismenu ul ul{
+
+}
+.sidebar-nav .metismenu ul ul a {
+    padding: 10px 15px 10px 45px;
+    font-weight: normal;
+}
+
+.sidebar-nav .metismenu a:hover,
+.sidebar-nav .metismenu a:focus,
+.sidebar-nav .metismenu a:active,
+.sidebar-nav .metismenu .mm-active > a {
+    /*color: #f8f9fa;*/
+    text-decoration: none;
+    /*background: #0b7285;*/
+}

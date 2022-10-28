@@ -1,0 +1,336 @@
+@import "variable";
+body {
+  color: @text;
+  direction: rtl;
+  font-family: IRANSansX;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  background: #f5faff;
+  font-weight: 400;
+  height: 100%;
+}
+html{
+  height: 100%;
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 30%, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.tab-container{
+  margin-bottom: 30px;
+  >ul{
+
+  >li{
+    display: none;
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+    &.active{
+      display: block;
+      animation-name: fadeInUp;
+      animation-duration: .4s;
+    }
+  }
+  }
+}
+a.black {
+  color: #000;
+}
+a {
+  color: @text;
+
+  text-decoration: none;
+  -webkit-transition: all .4s;
+  -o-transition: all .4s;
+  transition: all .4s;
+  &:hover {
+    color: @title;
+  }
+    
+ 
+}
+a.black:hover,
+a:hover {
+  color: #c70000;
+}
+
+p {
+
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 26px;
+  text-align: justify;
+  color: @text;
+  font-weight: 300;
+  &.refer{
+    font-size: 18px;
+    line-height: 30px;
+    color: #757575;
+    margin: 20px 20px 20px;
+   @media @media800{
+     font-size: 10px;
+    line-height: 16px;
+   }
+  }
+
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 15px;
+  color: @title;
+  font-family: IRANSansX;
+  -webkit-transition: all .4s;
+  -o-transition: all .4s;
+  transition: all .4s;
+}
+button,
+input,
+select,
+textarea{
+          font-family: IRANSansX;
+
+}
+label {
+  font-size: 14px;
+  color: #6b6b6b;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 15px;
+
+}
+ul {
+  list-style: outside none none;
+  margin: 0;
+  padding: 0;
+
+}
+
+img {
+  height: auto;
+  display: block;
+  max-width: 100%;
+
+}
+
+@font-face {
+  font-family: IRANSansX;
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/woff/IRANSansX-Bold.woff') format('woff'),   
+  url('../fonts/woff2/IRANSansX-Bold.woff2') format('woff2');   
+}
+
+@font-face {
+  font-family: IRANSansX;
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/woff/IRANSansX-Regular.woff') format('woff'),   
+  url('../fonts/woff2/IRANSansX-Regular.woff2') format('woff2'); 
+}
+
+
+.input-container{
+  position: relative;
+  max-width: 218px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  float: left;
+  clear: both;
+  width: 100%;
+  label{
+   font-size: 16px;
+   line-height: 28px;
+   color: #58697A;
+   position: absolute;
+   top: 11px;
+   right: 36px;
+  }
+  select,
+  input{
+    font-size: 14px;
+                color: #878787;
+                line-height: 38px;
+                height: 38px;
+                border: 1px solid #3e3e3e;
+                border-radius: 4px;
+                box-sizing: border-box;
+                padding: 0 10px;
+                width: 100%;
+    &:focus{
+      box-shadow: none;
+      outline: none;
+    }
+    &.dis{
+      border: 1px solid #d1d1d1;
+      background: #eeeeee;
+    }
+  }
+  &.active{
+    border-color: @theme;
+    background: #fff;
+    label{
+      padding: 0 10px;
+      background: #fff;
+      top: -15px;
+      right: 42px;
+    }
+  }
+    &.full{
+      max-width: 100%;
+      float: none;
+    }
+  &.textarea{
+    margin-bottom:  13px;
+    textarea{
+      font-size: 14px;
+                color: #878787;
+                line-height: 24px;
+                border: 1px solid #3e3e3e;
+                border-radius: 4px;
+                box-sizing: border-box;
+                padding: 0 10px;
+                margin-bottom:  0;
+      width: 100%;
+      height: 113px;
+      &:focus{
+      box-shadow: none;
+      outline: none;
+    }
+    }
+  }
+  &.gray{
+    textarea,
+    input,
+    select{
+      border-color: #d1d1d1;
+      background: #eeeeee;
+    }
+    textarea,
+    input{
+
+      &:not(:placeholder-shown) {
+      background: #d1d1d1;
+      }
+    }
+  }
+}
+.pass-container{
+   color: #878787;
+  line-height: 38px;
+  border: 1px solid #3e3e3e;
+  border-radius: 2px;
+  box-sizing: border-box;
+  padding: 0 10px;
+  position: relative;
+  max-width: 218px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  float: left;
+  clear: both;
+  direction: ltr;
+  input{
+        background-color: transparent;
+    border: none;
+    border-bottom: 2px solid gray;
+    display: inline-block;
+    font-size: 20px;
+    margin: 0 3px;
+    width: 1.5rem;
+    text-align: center;
+  }
+}
+.button-container{
+  text-align: center;
+  float: left;         
+  clear: both;
+  a,
+  button{
+    width: 92px;
+    height: 33px;
+    background: #443178;
+    line-height: 33px;
+    font-size: 14px;
+    border-radius: 5px;
+    display: inline-block;
+    border: none;
+    color: #fff;
+     font-family: IRANSansX;
+     cursor: pointer;
+     transition: all .3s;
+     &:hover{
+      background: darken(#443178, 10%);
+     }
+     &.green{
+      background: #0aab54;
+      &:hover{
+        background: darken(#0aab54, 10%);
+      }
+     }
+  }
+}
+
+
+.try{
+  width: 100%;
+  overflow: hidden;
+  text-align: left;
+  margin-bottom: 40px;
+  div{
+    display: inline-block;
+  }
+}
+
+.process{
+  position: relative;
+  height: 44px;
+  margin-bottom: 40px;
+  &:before{
+    content: "";
+    height: 1px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 22px;
+    background: #0aab54;
+  }
+  .name{
+    width: 44px;
+    height: 36px;
+    display: inline-block;
+    padding-top: 8px;
+    position: relative;
+    z-index: 2;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 15px;
+    background: #d1d1d1;
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+    &.active{
+      background: #0aab54;
+    }
+  }
+  .step{
+    width: 33.3333%;
+    float: right;
+    &.step1{
+      text-align: right;
+    }
+    &.step2{
+      text-align: center;
+    }
+    &.step3{
+      text-align: left;
+    }
+  }
+}

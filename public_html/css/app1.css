@@ -1,0 +1,169 @@
+.disnon {
+  display: none;
+}
+
+.content-box {
+  margin: 0 auto;
+  height: 90vh;
+  overflow: auto;
+}
+
+.side_right {
+  float: right;
+  width: 120px;
+}
+
+.side_left {
+  margin-right: 140px;
+}
+
+.daty_i li .title {
+  font-size: 16px;
+  color: #000;
+}
+.daty_i li .contetn {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+}
+.daty_i li .red {
+  color: red;
+}
+.daty_i li .green {
+  color: #1dc772;
+}
+
+.linky {
+  color: #0aab54;
+  position: absolute;
+  left: 31px;
+  top: 52px;
+  font-weight: bold;
+  font-size: 13px;
+  z-index: 999999999;
+}
+.linky * {
+  display: inline-block !important;
+}
+.linky img {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  top: 7px;
+}
+
+.box-content {
+  position: relative;
+}
+
+.content-box .main-title a,
+.content-box .main-title:before {
+  height: 100px;
+  width: 100px;
+  bottom: -50px;
+}
+
+.button-row .tx {
+  font-size: 16px;
+}
+.button-row a {
+  margin-bottom: 15px;
+  height: 55px;
+  line-height: 55px;
+  font-size: 16px;
+}
+
+#main {
+  padding-top: 0;
+}
+
+.disn {
+  background: #727171 !important;
+}
+
+.bo {
+  text-align: center;
+  margin: 10px auto;
+}
+.bo * {
+  text-align: center;
+}
+.bo h2 {
+  margin-bottom: 0 !important;
+}
+.bo span {
+  color: #000;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 5px !important;
+}
+.bo a {
+  display: inline-block;
+  padding: 5px 10px;
+  background: #0aab54;
+  color: #fff;
+  border-radius: 10px;
+}
+
+#qlist li {
+  overflow: hidden;
+  border-bottom: 2px solid #000;
+}
+#qlist li label {
+  display: inline-block;
+}
+#qlist li input[type=radio] {
+  margin: 0 10px;
+  /* IE 9 */
+  /* Chrome, Safari, Opera */
+  transform: scale(1.5);
+}
+
+.pass-container input {
+  border: none !important;
+  width: auto !important;
+}
+
+.er {
+  padding: 10px;
+  margin: 10px auto;
+  box-sizing: border-box;
+  border: 1px solid red;
+  background-color: #ffbcbc;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.info-form label {
+  display: block;
+  font-size: 16px;
+  /* line-height: 28px; */
+  color: #58697a;
+  /* position: absolute; */
+  /* top: 11px; */
+  position: relative;
+  display: block;
+  margin-bottom: 0;
+  top: 0;
+  right: 0;
+}
+
+.bold h4 {
+  font-weight: bold !important;
+  font-size: 14px !important;
+  color: #000 !important;
+}
+
+.nav-item.active {
+  background: #031a2a;
+}
