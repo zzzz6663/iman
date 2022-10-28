@@ -104,8 +104,11 @@
                     </a>
                 </li>
                 @endrole
-                <li class="nav-item ">
-                    <a class="nav-link   " href="{{route('logout')}}">
+
+
+                @role('admin')
+                <li class="nav-item {{(Route::currentRouteName()=='brand.index')?'active':''}}">
+                    <a class="nav-link {{(Route::currentRouteName()=='brand.index')?'active':''}}  " href="{{route('brand.index')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/home -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -118,11 +121,13 @@
                         </span>
                         <h1>
                             <span class="nav-link-title">
-                                Log Out
+                                Brands
                             </span>
                         </h1>
                     </a>
                 </li>
+                @endrole
+
             </ul>
         </div>
     </div>

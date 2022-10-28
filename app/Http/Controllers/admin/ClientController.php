@@ -23,11 +23,14 @@ class ClientController extends Controller
     public function index(Request $request)
     {
 
-        $user=auth()->user();
-        $clients = User::query();
+       $user=auth()->user();
+       $clients = User::query();
        $clients-> whereIn('role', ['client']);
        if( $user->role =='branch'){
         $clients->where('branch_id',$user->id);
+       }
+       if( $request->branch_id){
+        $clients->where('branch_id',$request->branch_id);
        }
         if ($request->search) {
             $search = $request->search;

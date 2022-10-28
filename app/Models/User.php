@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -56,13 +56,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function country() {
-         return $this->belongsTo( Country::class) ;
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+    public function logo_img()
+    {
+        if ($this->logo) {
+            return   asset('/media/branch/' . $this->logo);
         }
-    public function logo_img() {
-        if($this->logo ){
-         return   asset('/media/branch/'.$this->logo);
-        }
+    }
 
-        }
+    public function branch(){
+        return $this->belongsTo(User::class,'branch_id','id');
+    }
 }

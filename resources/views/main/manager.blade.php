@@ -20,6 +20,7 @@
     <link href="/manager/dist/css/tabler-vendors.min.css?1666304673" rel="stylesheet"/>
     <link href="/manager/dist/css/demo.min.css?1666304673" rel="stylesheet"/>
     <link href="/css/select2.min.css" rel="stylesheet"/>
+    <link href="/css/css.css" rel="stylesheet"/>
 
 
 
@@ -34,6 +35,7 @@
         @include('admin.section.navbar')
         <div class="page-body">
             <div class="container-xl">
+                
                 @yield('content')
             </div>
         @include('admin.section.footer')

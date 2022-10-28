@@ -7,27 +7,13 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Clients
-                        ({{$clients->total()}})
-
-                        @if (request('branch_id'))
-                          <span class="ml1 text-white bg-purple">
-                            @php
-                                $br=App\Models\User::find(request('branch_id'));
-                                if($br){
-                                   echo $br->username;
-                                }
-                            @endphp
-                            Clients
-
-                          </span>
-
-                        @endif
+                        staffs
+                        ({{$staffs->total()}})
 
                     </h2>
                 </div>
             </div>
-            <form class="bl" action="{{route('client.index')}}" method="get">
+            <form class="bl" action="{{route('staff.index')}}" method="get">
                 @csrf
                 @method('get')
                 <div class="row align-items-center">
@@ -36,7 +22,6 @@
                         <select value="{{old('shahr_id')}}" class="form-select" name="shahr_id">
                         </select>
                     </div> --}}
-                    @role('admin|branch')
                     <div class="col-6">
                         <div class="d-flex ">
                             <input type="search" name="search" value="{{request('search')}}" class="form-control d-inline-block w-9 me-3" placeholder=" search  ">
@@ -48,16 +33,15 @@
                                 </svg>
                                 search
                             </button>
+
+
                         </div>
                     </div>
-                    @endrole
-                    @role('branch')
                     <div class="col-6 col-sm-4 col-md-2 col-xl py-3">
-                        <a href="{{ route('client.create') }}" class="btn btn-primary w-100 ml-1">
-                            New Client
+                        <a href="{{ route('staff.create') }}" class="btn btn-primary w-100 ml-1">
+                            New staff
                           </a>
                       </div>
-                      @endrole
                 </div>
             </form>
 
@@ -74,33 +58,38 @@
                     <tr>
                       <th>ID</th>
                       <th>Name</th>
+                      <th>Last Name</th>
                       <th>Username</th>
-                      <th>Person</th>
-                      <th>Phone</th>
-                      <th>Tax</th>
-                      <th>Branch</th>
-                      <th>Country</th>
+                      <th>Password</th>
                       <th class="w-1"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($clients as $client)
+                    @if ($company)
+                    <tr class="bg-dark text-white">
+                        <td>---</td>
+                        <td>{{ $company->name }}</td>
+                        <td>{{ $company->lastname }}</td>
+                        <td>{{ $company->username }}</td>
+                        <td>{{ $company->password }}</td>
+                        <td>
+                            <a href="{{ asset('/media/company/'.$company->logo) }}">Logo</a>
+                          <a href="{{ route('edit.company') }}">Edit</a>
+                        </td>
+                      </tr>
+                    @endif
+
+
+                    @foreach ($staffs as $staff)
 
                     <tr>
                       <td>{{ $loop->iteration }}</td>
-                      <td>{{ $client->company }}</td>
-                      <td>{{ $client->username }}</td>
-                      <td>{{ $client->person }}</td>
-                      <td>{{ $client->phone }}</td>
-                      <td>{{ $client->tax }}</td>
+                      <td>{{ $staff->name }}</td>
+                      <td>{{ $staff->lastname }}</td>
+                      <td>{{ $staff->username }}</td>
+                      <td>{{ $staff->password }}</td>
                       <td>
-                       <a class=" bg-teal-lt" href="{{ route('client.index',['branch_id'=>$client->branch->id]) }}">
-                        {{ $client->branch->username }}
-                      </a>
-                      </td>
-                      <td>{{ $client->country?$client->country->en_name:'' }}</td>
-                      <td>
-                        <a href="{{ route('client.edit',$client->id) }}">Edit</a>
+                        <a href="{{ route('staff.edit',$staff->id) }}">Edit</a>
                       </td>
                     </tr>
                     @endforeach
@@ -112,7 +101,7 @@
             </div>
           </div>
         <div class="d-flex mt-4">
-            {{ $clients->appends(Request::all())->links('admin.section.pagination') }}
+            {{ $staffs->appends(Request::all())->links('admin.section.pagination') }}
         </div>
     </div>
 

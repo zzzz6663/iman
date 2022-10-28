@@ -30,7 +30,9 @@ Route::prefix('admin')->namespace('admin')->middleware(['auth'])->group(function
     Route::resource('branch', 'BranchController')->middleware(['role:admin']);
     Route::any('/edit_company', 'StaffController@edit_company')->name('edit.company')->middleware(['role:admin']);
     Route::resource('staff', 'StaffController')->middleware(['role:admin']);
+    Route::resource('supplier', 'SupplierController')->middleware(['role:admin']);
     Route::resource('client', 'ClientController')->middleware(['role:admin|branch']);
+    Route::resource('brand', 'BrandController')->middleware(['role:admin']);
     Route::resource('order', 'OrderController')->middleware(['role:client|admin']);
 
     // Route::post('/new_adventure', 'UserController@new_adventure')->name('user.new.adventure');
