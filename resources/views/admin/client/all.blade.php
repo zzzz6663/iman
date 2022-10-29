@@ -77,6 +77,7 @@
                       <th>Username</th>
                       <th>Person</th>
                       <th>Phone</th>
+                      <th>Email</th>
                       <th>Tax</th>
                       <th>Branch</th>
                       <th>Country</th>
@@ -92,6 +93,7 @@
                       <td>{{ $client->username }}</td>
                       <td>{{ $client->person }}</td>
                       <td>{{ $client->phone }}</td>
+                      <td>{{ $client->email }}</td>
                       <td>{{ $client->tax }}</td>
                       <td>
                        <a class=" bg-teal-lt" href="{{ route('client.index',['branch_id'=>$client->branch->id]) }}">

@@ -7,13 +7,13 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        products
-                        ({{$products->total()}})
+                        Suppliers
+                        ({{$suppliers->total()}})
 
                     </h2>
                 </div>
             </div>
-            <form class="bl" action="{{route('product.index')}}" method="get">
+            <form class="bl" action="{{route('supplier.index')}}" method="get">
                 @csrf
                 @method('get')
                 <div class="row align-items-center">
@@ -38,8 +38,8 @@
                         </div>
                     </div>
                     <div class="col-6 col-sm-4 col-md-2 col-xl py-3">
-                        <a href="{{ route('product.create') }}" class="btn btn-primary w-100 ml-1">
-                            New product
+                        <a href="{{ route('supplier.create') }}" class="btn btn-primary w-100 ml-1">
+                            New supplier
                           </a>
                       </div>
                 </div>
@@ -57,51 +57,34 @@
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>barcode</th>
-                      <th>supplier</th>
-                      <th>brand</th>
-                      <th>description</th>
-                      <th>width</th>
-                      <th>height</th>
-                      <th>unit</th>
-                      <th>inw</th>
-                      <th>volume</th>
-                      <th>price</th>
-                      <th>south code</th>
-                      <th>euro number</th>
+                      <th>Name</th>
+                      <th> Email</th>
+                      <th>Phone</th>
+                      <th>Address</th>
+                      <th>Info</th>
                       <th class="w-1"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($products as $product)
+                    @foreach ($suppliers as $supplier)
                     <tr>
                       <td>{{ $loop->iteration }}</td>
-                      <td>{{ $product->barcode }}</td>
-                      <td>{{ $product->supplier->name }}</td>
-                      <td>{{ $product->brand->name }}</td>
-                      <td>{{ $product->description }}</td>
-                      <td>{{ $product->width }}</td>
-                      <td>{{ $product->height }}</td>
-                      <td>{{ $product->unit }}</td>
-                      <td>{{ $product->inw }}</td>
-                      <td>{{ $product->volume }}</td>
-                      <td>{{ $product->price }}</td>
-                      <td>{{ $product->south_code }}</td>
-                      <td>{{ $product->euro_number }}</td>
+                      <td>{{ $supplier->email }}</td>
+                      <td>{{ $supplier->phone }}</td>
+                      <td>{{ $supplier->address }}</td>
+                      <td>{{ $supplier->info }}</td>
                       <td>
-                        <a href="{{ route('product.edit',$product->id) }}">Edit</a>
+                        <a href="{{ route('supplier.edit',$supplier->id) }}">Edit</a>
                       </td>
                     </tr>
                     @endforeach
-
-
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
         <div class="d-flex mt-4">
-            {{ $products->appends(Request::all())->links('admin.section.pagination') }}
+            {{ $suppliers->appends(Request::all())->links('admin.section.pagination') }}
         </div>
     </div>
 

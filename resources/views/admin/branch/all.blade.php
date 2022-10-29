@@ -65,6 +65,7 @@
                       <th>Username</th>
                       <th>Person</th>
                       <th>Phone</th>
+                      <th>Email</th>
                       <th>Tax</th>
                       <th>Country</th>
                       <th>logo</th>
@@ -80,6 +81,7 @@
                       <td>{{ $branch->username }}</td>
                       <td>{{ $branch->person }}</td>
                       <td>{{ $branch->phone }}</td>
+                      <td>{{ $branch->email }}</td>
 
                       <td>{{ $branch->tax }}</td>
                       <td>{{ $branch->country?$branch->country->en_name:'' }}</td>

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('company')->nullable();;
             $table->string('person')->nullable();;
             $table->string('phone')->nullable();;
+            $table->string('email')->nullable();;
             $table->string('tax')->nullable();;
             $table->string('address')->nullable();;
             $table->string('logo',2500)->nullable();;

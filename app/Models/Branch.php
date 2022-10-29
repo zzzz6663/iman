@@ -18,6 +18,7 @@ class Branch extends Model
         'person',
         'phone',
         'tax',
+        'email',
         'country_id',
         'address',
         'logo',

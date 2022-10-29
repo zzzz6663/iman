@@ -5,14 +5,14 @@ namespace App\Http\Controllers\admin;
 use App\Models\Chat;
 use App\Models\City;
 use App\Models\User;
-use App\Models\Brand;
 use App\Models\Travel;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 
-class BrandController extends Controller
+class supplierController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,15 +21,17 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        $brands = Brand::query();
+        $suppliers = Supplier::query();
         if ($request->search) {
             $search = $request->search;
-           $brands->where(function ($query) use ($search, $brands) {
-                $query->where('name', 'LIKE', "%{$search}%");
+           $suppliers->where(function ($query) use ($search, $suppliers) {
+                $suppliers->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%")
+                ->orWhere('phone', 'LIKE', "%{$search}%");
            });
         }
-        $brands = $brands->latest()->paginate(10);
-        return view('admin.brand.all', compact(['brands']));
+        $suppliers = $suppliers->latest()->paginate(10);
+        return view('admin.supplier.all', compact(['suppliers']));
     }
 
     /**
@@ -39,9 +41,7 @@ class BrandController extends Controller
      */
     public function create()
     {
-
-
-        return view('admin.brand.create');
+        return view('admin.supplier.create');
     }
 
     /**
@@ -52,13 +52,16 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $data=$request->validate([
-            'name'=>'required|min:3|unique:users,username',
+            'name'=>'required|min:3',
+            'email'=>'required|unique:suppliers,email',
+            'phone'=>'required|unique:suppliers,phone',
+            'address'=>'required|min:3',
+            'info'=>'required|min:3',
         ]);
-        $user=Brand::create($data);
-        alert()->success(' New  brand created' );
-        return redirect()->route('brand.index');
+        Supplier::create($data);
+        alert()->success(' New  supplier created' );
+        return redirect()->route('supplier.index');
     }
 
     /**
@@ -67,9 +70,9 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Supplier $user)
     {
-        return view('admin.brand.show', compact(['user']));
+        return view('admin.supplier.show', compact(['user']));
     }
 
     /**
@@ -78,9 +81,9 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Brand $brand)
+    public function edit(Supplier $supplier)
     {
-        return view('admin.brand.edit',compact(['brand']));
+        return view('admin.supplier.edit',compact(['supplier']));
     }
 
     /**
@@ -90,14 +93,19 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Brand $brand)
+    public function update(Request $request, Supplier $supplier)
     {
         $data=$request->validate([
-            'name'=>'required|min:3|unique:users,username',
+            'name'=>'required|min:3',
+            'email'=>'required|unique:suppliers,email,'.$supplier->id,
+            'phone'=>'required|unique:suppliers,phone,'.$supplier->id,
+            'address'=>'required|min:3',
+            'info'=>'required|min:3',
         ]);
-    $brand->update($data);
-    alert()->success('   brand updated' );
-    return redirect()->route('brand.index');
+        return redirect()->route('supplier.index');
+    $supplier->update($data);
+    alert()->success('   supplier updated' );
+    return redirect()->route('supplier.index');
     }
 
     /**
@@ -110,9 +118,6 @@ class BrandController extends Controller
     {
         //
     }
-
-
-
 
 
 

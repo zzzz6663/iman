@@ -42,9 +42,16 @@
                     <label class="form-label">Phone</label>
                     <input type="tell" name="phone" class="form-control"  value="{{ old('phone',$client->phone) }}"  placeholder="Enter User Phone">
                   </div>
-
+                  <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control"  value="{{ old('email',$client->email) }}"  placeholder="Enter Email">
+                  </div>
                   <div class="mb-3">
                     <label class="form-label">Tax number</label>
+                    <input type="tell" name="tax" class="form-control"  value="{{ old('tax',$client->tax) }}"  placeholder="Enter Tax number">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">  euro_number</label>
                     <input type="tell" name="tax" class="form-control"  value="{{ old('tax',$client->tax) }}"  placeholder="Enter Tax number">
                   </div>
                   <div class="mb-3">
@@ -52,7 +59,7 @@
                     <select class="form-select select2" name="country_id" id="country">
                         <option value="">please select</option>
                         @foreach (App\Models\Country::all() as $country)
-                        <option {{ old('country_id',$client->id)== $country->id?:'selected' }} value="{{ $country->id }}">{{ $country->en_name }}</option>
+                        <option {{ old('country_id',$client->id)== $country->id?'selected' :''}} value="{{ $country->id }}">{{ $country->en_name }}</option>
                         @endforeach
                     </select>
                   </div>

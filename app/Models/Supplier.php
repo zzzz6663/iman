@@ -5,13 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Brand extends Model
+class Supplier extends Model
 {
     use HasFactory;
     protected $fillable=[
-        'name'
+        'name',
+        'email',
+        'phone',
+        'address',
+        'info',
     ];
+
     public function products(){
         return $this->HasMany(Product::class);
     }
+ 
 }
