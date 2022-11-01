@@ -25,14 +25,15 @@ class ProductController extends Controller
         if ($request->search) {
             $search = $request->search;
            $products->where(function ($query) use ($search, $products) {
-                $products->where('barcode', 'LIKE', "%{$search}%")
+                $products->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('barcode', 'LIKE', "%{$search}%")
                 ->orWhere('traffic_code', 'LIKE', "%{$search}%")
                 ->orWhere('width', 'LIKE', "%{$search}%")
                 ->orWhere('price', 'LIKE', "%{$search}%")
                 ->orWhereHas('brand', function ($query) use ($search) {
                     $query->where('name', 'LIKE', "%{$search}%");
                 })
-                ->orWhereHas('supplier', function ($query) use ($search) {
+                ->orWhereHas('suppliers', function ($query) use ($search) {
                     $query->where('name', 'LIKE', "%{$search}%");
                 });
            });
@@ -63,6 +64,7 @@ class ProductController extends Controller
     {
         // dd($request->all());
         $data=$request->validate([
+            'name'=>'required|min:3|unique:products,name',
             'barcode'=>'required|min:3|unique:products,barcode',
             'inw'=>'required',
             'igw'=>'required',
@@ -71,14 +73,15 @@ class ProductController extends Controller
             'unit'=>'required',
             'volume'=>'required',
             'price'=>'required',
-            'traffic_code'=>'required',
+            // 'traffic_code'=>'required',
             'south_code'=>'required',
             'euro_number'=>'required',
-            'supplier_id'=>'required',
+            'suppliers'=>'required|array',
             'brand_id'=>'required',
             'description'=>'required',
         ]);
         $product=Product::create($data);
+        $product->suppliers()->attach($data['suppliers']);
         alert()->success(' New  product created' );
         return redirect()->route('product.index');
     }
@@ -115,6 +118,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $data=$request->validate([
+            'name'=>'required|min:3|unique:products,name,'.$product->id,
             'barcode'=>'required|min:3|unique:products,barcode,'.$product->id,
             'inw'=>'required',
             'igw'=>'required',
@@ -123,13 +127,14 @@ class ProductController extends Controller
             'unit'=>'required',
             'volume'=>'required',
             'price'=>'required',
-            'traffic_code'=>'required',
+            // 'traffic_code'=>'required',
             'south_code'=>'required',
             'euro_number'=>'required',
-            'supplier_id'=>'required',
+            'suppliers'=>'required|array',
             'brand_id'=>'required',
             'description'=>'required',
         ]);
+        $product->suppliers()->sync($data['suppliers']);
     $product->update($data);
     alert()->success('   product updated' );
     return redirect()->route('product.index');

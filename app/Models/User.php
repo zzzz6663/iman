@@ -27,6 +27,7 @@ class User extends Authenticatable
         'phone',
         'company',
         'address',
+        'user_id',
         'branch_id',
         'country_id',
         'person',
@@ -66,8 +67,24 @@ class User extends Authenticatable
             return   asset('/media/branch/' . $this->logo);
         }
     }
-
     public function branch(){
         return $this->belongsTo(User::class,'branch_id','id');
+    }
+    // public function products(){
+    //     return $this->belongsTo(User::class,'branch_id','id');
+    // }
+    public function branch_products(){
+        return $this->belongsToMany(Product::class)->withPivot(['show','traffic_code']);
+    }
+    public function product_traffic_code($product){
+        $is_exist=  $this->branch_products()->where('product_id', $product->id)->first();
+       if( $is_exist ){
+        return $is_exist->pivot->traffic_code;
+       }
+    }
+
+
+    public function orders(){
+        return $this->hasMany(Order::class,'client_id','id');
     }
 }

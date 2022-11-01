@@ -5,6 +5,8 @@ namespace App\Http\Controllers\admin;
 use App\Models\Chat;
 use App\Models\City;
 use App\Models\User;
+use App\Models\Brand;
+use App\Models\Order;
 use App\Models\Travel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -49,8 +51,10 @@ class ClientController extends Controller
            });
 
         }
+        $route=route('order.index');
+
         $clients = $clients->latest()->paginate(10);
-        return view('admin.client.all', compact(['clients']));
+        return view('admin.client.all', compact(['clients','route']));
     }
 
     /**
@@ -87,7 +91,7 @@ class ClientController extends Controller
             'email'=>'required|min:3|unique:users,email',
             'tax'=>'required|min:3|unique:users,tax',
             'country_id'=>'required|exists:countries,id',
-            'address'=>'required|min:3|unique:users',
+            'address'=>'required|min:3',
             'password'=>'required|min:3',
         ]);
         $data['role']='client';
@@ -146,7 +150,7 @@ class ClientController extends Controller
         'email'=>'required|min:3|unique:users,email,'.$client->id,
         'tax'=>'required|min:3|unique:users,tax,'.$client->id,
         'country_id'=>'required|exists:countries,id',
-        'address'=>'required|min:3|unique:users',
+        'address'=>'required|min:3',
         'password'=>'required|min:3',
     ]);
     $client->update($data);
@@ -163,6 +167,40 @@ class ClientController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function get_product(Brand $brand)
+    {
+        $user=auth()->user();
+        $products=$user->branch->branch_products()->wherePivot('show',1);
+        $products = $products->where('brand_id',$brand->id)->latest()->paginate(10);
+        return response()->json([
+            'body' => view('admin.product.get_product',compact('products'))->render(),
+        ]);
+    }
+    public function client_orders(User $user, Request $request)
+    {
+        $orders = $user->orders();
+        if ($request->search) {
+            $search = $request->search;
+           $orders->where(function ($query) use ($search, $orders) {
+                $orders->where('barcode', 'LIKE', "%{$search}%")
+                ->orWhere('width', 'LIKE', "%{$search}%")
+                ->orWhere('height', 'LIKE', "%{$search}%")
+                ->orWhere('unit', 'LIKE', "%{$search}%")
+                ->orWhere('igw', 'LIKE', "%{$search}%")
+                ->orWhere('volume', 'LIKE', "%{$search}%")
+                ->orWhere('price', 'LIKE', "%{$search}%")
+                ->orWhere('south_code', 'LIKE', "%{$search}%")
+                ->orWhere('euro_number', 'LIKE', "%{$search}%")
+                ->orWhere('quantity', 'LIKE', "%{$search}%");
+                // ->orWhereHas('country', function ($query) use ($search) {
+                //     $query->where('en_name', 'LIKE', "%{$search}%");
+                // });
+           });
+        }
+        $route=route('client.orders',$user->id);
+        $orders = $orders->latest()->paginate(10);
+        return view('admin.order.all', compact(['orders' ,'route','user']));
     }
 
 

@@ -15,6 +15,23 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('client_id')->nullable();;
+            $table->unsignedBigInteger('product_id')->nullable();;
+            $table->unsignedBigInteger('supplier_id')->nullable();;
+            $table->unsignedBigInteger('brand_id')->nullable();;
+            $table->string('traffic_code',2500)->nullable();;
+            $table->string('barcode',2500)->nullable();;
+            $table->text('description')->nullable();;
+            $table->integer('width')->nullable();;
+            $table->integer('height')->nullable();;
+            $table->string('unit',2500)->nullable();;
+            $table->integer('inw')->nullable();;
+            $table->integer('igw')->nullable();;
+            $table->string('volume',2500)->nullable();;
+            $table->integer('price')->nullable();;
+            $table->string('south_code')->nullable();;
+            $table->string('euro_number')->nullable();;
+            $table->unsignedBigInteger('quantity')->nullable();;
             $table->timestamps();
         });
     }

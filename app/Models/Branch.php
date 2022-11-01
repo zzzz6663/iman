@@ -24,4 +24,7 @@ class Branch extends Model
         'logo',
         'password',
     ];
+
+
+    
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -102,5 +103,68 @@ Artisan::call('cache:clear');
 
 
 
+   }
+
+
+
+
+   public function pass_products(User $user ,Request $request)
+   {
+
+
+       if($user->role!='branch'){
+           alert()->error('target is not branch');
+           return redirect()->route('branch.index');
+       }
+       if($request->method()=='POST'){
+
+         $is_exist=  $user->branch_products()->where('product_id', $request->product)->first();
+         if( $is_exist){
+           if($is_exist->pivot->show){
+               $show=0;
+           }else{
+               $show=1;
+           }
+           $user->branch_products()->updateExistingPivot($request->product, array('show' => $show), false);
+           return response()->json([
+               'show' =>  $show,
+           ]);
+         }else{
+           $user->branch_products()->attach($request->product,['product_id'=>$request->product,'show'=>1]);
+           return response()->json([
+               'show' =>  1,
+           ]);
+         }
+
+
+           // return response()->json([
+           //     'all' => $request->all(),
+           //     'status' => 'ok',
+           //     'exist' =>  $is_exist,
+           //     'show' =>  $is_exist,
+           // ]);
+       }
+
+       $products = Product::query();
+       if ($request->search) {
+           $search = $request->search;
+          $products->where(function ($query) use ($search, $products) {
+               $products->where('barcode', 'LIKE', "%{$search}%")
+               ->orWhere('traffic_code', 'LIKE', "%{$search}%")
+               ->orWhere('width', 'LIKE', "%{$search}%")
+               ->orWhere('price', 'LIKE', "%{$search}%")
+               ->orWhereHas('brand', function ($query) use ($search) {
+                   $query->where('name', 'LIKE', "%{$search}%");
+               })
+               ->orWhereHas('supplier', function ($query) use ($search) {
+                   $query->where('name', 'LIKE', "%{$search}%");
+               });
+          })->
+          whereHas('branches', function ($query) use($user) {
+           $query->where('branch_id', $user->id);
+       });;
+       }
+       $products = $products->latest()->paginate(10);
+       return view('admin.product.pass_products',compact(['user','products']));
    }
 }

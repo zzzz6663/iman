@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Travel;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
@@ -29,22 +30,24 @@ class OrderController extends Controller
         if ($request->search) {
             $search = $request->search;
            $orders->where(function ($query) use ($search, $orders) {
-                $orders->where('name', 'LIKE', "%{$search}%")
-                ->orWhere('email', 'LIKE', "%{$search}%")
-                ->orWhere('lastname', 'LIKE', "%{$search}%")
-                ->orWhere('username', 'LIKE', "%{$search}%")
-                ->orWhere('phone', 'LIKE', "%{$search}%")
-                ->orWhere('company', 'LIKE', "%{$search}%")
-                ->orWhere('person', 'LIKE', "%{$search}%")
-                ->orWhere('tax', 'LIKE', "%{$search}%")
-                ->orWhereHas('country', function ($query) use ($search) {
-                    $query->where('en_name', 'LIKE', "%{$search}%");
-                });
+                $orders->where('barcode', 'LIKE', "%{$search}%")
+                ->orWhere('width', 'LIKE', "%{$search}%")
+                ->orWhere('height', 'LIKE', "%{$search}%")
+                ->orWhere('unit', 'LIKE', "%{$search}%")
+                ->orWhere('igw', 'LIKE', "%{$search}%")
+                ->orWhere('volume', 'LIKE', "%{$search}%")
+                ->orWhere('price', 'LIKE', "%{$search}%")
+                ->orWhere('south_code', 'LIKE', "%{$search}%")
+                ->orWhere('euro_number', 'LIKE', "%{$search}%")
+                ->orWhere('quantity', 'LIKE', "%{$search}%");
+                // ->orWhereHas('country', function ($query) use ($search) {
+                //     $query->where('en_name', 'LIKE', "%{$search}%");
+                // });
            });
         }
-
+        $route=route('order.index');
         $orders = $orders->latest()->paginate(10);
-        return view('admin.order.all', compact(['orders']));
+        return view('admin.order.all', compact(['orders','route']));
     }
 
     /**
@@ -54,9 +57,9 @@ class OrderController extends Controller
      */
     public function create()
     {
+        $user=auth()->user();
 
-
-        return view('admin.order.create');
+        return view('admin.order.create',compact(['user']));
     }
 
     /**
@@ -74,17 +77,26 @@ class OrderController extends Controller
         return  back();
        }
         $data=$request->validate([
-            'username'=>'required|min:3|unique:users,username',
-            'company'=>'required|min:3',
-            'person'=>'required|min:3',
-            'phone'=>'required|min:3|unique:users,phone',
-            'tax'=>'required|min:3|unique:users,tax',
-            'country_id'=>'required|exists:countries,id',
-            'address'=>'required|min:3|unique:users',
-            'password'=>'required|min:3',
+            'product_id'=>'required',
+            'brand_id'=>'required',
+            'quantity'=>'required|numeric|min:0|not_in:0',
         ]);
-        $order=User::create($data);
-        $order->assignRole( 'order');
+        $product=Product::find($data['product_id']);
+        $data['supplier_id']=$product->supplier_id;
+        $data['brand_id']=$product->brand_id;
+        $data['barcode']=$product->barcode;
+        $data['description']=$product->description;
+        $data['width']=$product->width;
+        $data['height']=$product->height;
+        $data['unit']=$product->unit;
+        $data['inw']=$product->inw;
+        $data['igw']=$product->igw;
+        $data['volume']=$product->volume;
+        $data['price']=$product->price;
+        $data['south_code']=$product->south_code;
+        $data['euro_number']=$product->euro_number;
+        $data['traffic_code']=$user->branch->product_traffic_code($product);
+        $user->orders()->create($data);
         alert()->success(' New  order created' );
         return redirect()->route('order.index');
     }

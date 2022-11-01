@@ -90,6 +90,7 @@
                       </td>
                       <td>
                         <a href="{{ route('branch.edit',$branch->id) }}">Edit</a>
+                        <a class="btn btn-primary" href="{{ route('pass.products',$branch->id) }}">pass products<a>
                       </td>
                     </tr>
                     @endforeach

@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\Travel;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
@@ -14,6 +15,10 @@ use Illuminate\Support\Facades\Validator;
 
 class BranchController extends Controller
 {
+
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -137,7 +142,7 @@ class BranchController extends Controller
             'email'=>'required|min:3|unique:users,email,'.$branch->id,
             'tax'=>'required|min:3|unique:users,tax,'.$branch->id,
             'country_id'=>'required|exists:countries,id',
-            'address'=>'required|min:3,'.$branch->id,
+            'address'=>'required|min:3',
             'logo'=>'nullable',
             'password'=>'required|min:3',
         ]);
@@ -172,4 +177,52 @@ class BranchController extends Controller
 
 
 
+    public function pass_traffic_code(Request $request ,Product $product)
+    {
+
+        $user=auth()->user();
+
+        $is_exist=  $user->branch_products()->where('product_id', $request->product)->first();
+
+        if( $user->product_traffic_code($product)){
+            alert()->error('this product has traffic code');
+            return redirect()->route('branch.products');
+        }
+
+        if($request->method()=='POST'){
+            $data=$request->validate([
+                'traffic_code'=>'required'
+            ]);
+            $user->branch_products()->updateExistingPivot($product->id, array('traffic_code' => $data['traffic_code']), false);
+            alert()->success('all product is updating');
+            return redirect()->route('branch.products');
+        }
+        return view('admin.product.pass_traffic_code',compact(['product']));
+    }
+    public function branch_products(Request $request)
+    {
+        $user=auth()->user();
+        $products=$user->branch_products()->wherePivot('show',1);
+        // $products = Product::query();
+        if ($request->search) {
+            $search = $request->search;
+           $products->where(function ($query) use ($search, $products) {
+                $products->where('barcode', 'LIKE', "%{$search}%")
+                ->orWhere('width', 'LIKE', "%{$search}%")
+                ->orWhere('price', 'LIKE', "%{$search}%")
+                ->orWhereHas('brand', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%{$search}%");
+                })
+                ->orWhereHas('supplier', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%{$search}%");
+                });
+           });
+        }
+        // $user=auth()->user();
+        // $products->whereHas('branches',function ($query) use ($user) {
+        //     $query->where('user_id', $user->id)->wherePivot('show',1);
+        // });
+        $products = $products->latest()->paginate(10);
+        return view('admin.product.branch_products',compact(['products','user']));
+    }
 }

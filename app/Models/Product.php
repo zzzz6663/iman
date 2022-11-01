@@ -9,6 +9,7 @@ class Product extends Model
 {
     use HasFactory;
     protected $fillable=[
+        'name',
         'supplier_id',
         'brand_id',
         'traffic_code',
@@ -24,10 +25,15 @@ class Product extends Model
         'south_code',
         'euro_number',
     ];
-    public function supplier(){
-        return $this->belongsTo(Supplier::class);
+    public function suppliers(){
+        return $this->belongsToMany(Supplier::class);
     }
     public function brand(){
         return $this->belongsTo(Brand::class);
     }
+    public function branches(){
+        return $this->belongsToMany(User::class)->withPivot(['show','traffic_code']);
+    }
+
+
 }

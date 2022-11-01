@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/clear', 'AdminController@clear');
 
 
 Route::namespace('admin')->middleware('web')->group(function () {
     Route::post('/check_login', 'AdminController@check_login')->name('admin.check.login');
+    Route::get('/clear', 'AdminController@clear');
 
 Route::get('/', 'AdminController@login')->name('login');
 
@@ -24,7 +24,11 @@ Route::get('/', 'AdminController@login')->name('login');
 });
 Route::prefix('admin')->namespace('admin')->middleware(['auth'])->group(function () {
     // login admin
-    // Route::get('/agents_all','AdminController@agents_all')->name('admin.agents.all');
+    Route::get('/client_orders/{user}','ClientController@client_orders')->name('client.orders')->middleware(['role:branch|admin']);
+    Route::post('/get_product/{brand}','ClientController@get_product')->name('get.product')->middleware(['role:client']);
+    Route::any('/pass_products/{user}','AdminController@pass_products')->name('pass.products')->middleware(['role:admin']);
+    Route::any('/branch_products','BranchController@branch_products')->name('branch.products')->middleware(['role:branch']);
+    Route::any('/pass_traffic_code/{product}','BranchController@pass_traffic_code')->name('pass.traffic.code')->middleware(['role:branch']);
     // Route::post('/sub_cat_list/{category}', 'CategoryController@sub_cat_list')->middleware(['role:admin']);
     // Route::resource('category', 'CategoryController')->middleware(['role:admin']);
     Route::resource('branch', 'BranchController')->middleware(['role:admin']);

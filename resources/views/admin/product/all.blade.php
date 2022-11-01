@@ -44,9 +44,6 @@
                       </div>
                 </div>
             </form>
-
-
-
         </div>
 
 
@@ -57,6 +54,7 @@
                   <thead>
                     <tr>
                       <th>ID</th>
+                      <th>name</th>
                       <th>barcode</th>
                       <th>supplier</th>
                       <th>brand</th>
@@ -76,8 +74,9 @@
                     @foreach ($products as $product)
                     <tr>
                       <td>{{ $loop->iteration }}</td>
+                      <td>{{ $product->name }}</td>
                       <td>{{ $product->barcode }}</td>
-                      <td>{{ $product->supplier->name }}</td>
+                      <td>{{  implode(', ', $product->suppliers()->pluck('name')->toArray())}}</td>
                       <td>{{ $product->brand->name }}</td>
                       <td>{{ $product->description }}</td>
                       <td>{{ $product->width }}</td>

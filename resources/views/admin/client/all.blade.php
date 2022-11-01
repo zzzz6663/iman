@@ -103,6 +103,7 @@
                       <td>{{ $client->country?$client->country->en_name:'' }}</td>
                       <td>
                         <a href="{{ route('client.edit',$client->id) }}">Edit</a>
+                        <a href="{{ route('client.orders',$client->id) }}">orders</a>
                       </td>
                     </tr>
                     @endforeach

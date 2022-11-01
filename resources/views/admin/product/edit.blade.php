@@ -8,7 +8,7 @@
         <div class="col">
             <h2 class="page-title">
                 Update Product
-                {{ $product->barcode }}
+                {{ $product->name }}
             </h2>
         </div>
     </div>
@@ -25,7 +25,12 @@
             <div class="col-xl-12">
                     <div class="row">
 
-
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label"> Name</label>
+                                <input type="text" name="name" class="form-control"  value="{{ old('name',$product->name) }}"  placeholder="Enter  Name">
+                              </div>
+                        </div>
 
                         <div class="col-md-4">
                             <div class="mb-3">
@@ -59,11 +64,15 @@
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label class="form-label">Unit</label>
-                                <input type="number" name="unit" class="form-control"  value="{{ old('unit',$product->unit) }}"  placeholder="Enter   Unit">
+                                <div class="form-label">Unit</div>
+                                <select class="form-select " name="unit" id="unit">
+                                    <option value="">please select</option>
+                                    <option {{ old('unit',$product->unit)=='ml'?'selected':'' }} value="ml">ml</option>
+                                    <option {{ old('unit',$product->unit)=='kg'?'selected':'' }} value="kg">kg</option>
+                                    <option {{ old('unit',$product->unit)=='ltr'?'selected':'' }} value="ltr">ltr</option>
+                                </select>
                               </div>
                         </div>
-
 
 
                         <div class="col-md-4">
@@ -75,16 +84,16 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Price</label>
-                                <input type="number" name="price" class="form-control"  value="{{ old('price',$product->price) }}"  placeholder="Enter   Price">
+                                <input type="number" name="price" step="0.001" class="form-control"  value="{{ old('price',$product->price) }}"  placeholder="Enter   Price">
                               </div>
                         </div>
-         <div class="col-md-4">
+         {{-- <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Country Tariff code
                                 </label>
                                 <input type="number" name="traffic_code" class="form-control"  value="{{ old('traffic_code',$product->traffic_code) }}"  placeholder="Enter   Country Tariff code">
                               </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">SOUTH AFRICA TARIFF CODES
@@ -100,13 +109,15 @@
                               </div>
                         </div>
 
+
+
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <div class="form-label">Supplier</div>
-                                <select class="form-select select2" name="supplier_id" id="supplier_id">
+                                <select class="form-select select2" multiple name="suppliers[]" id="supplier_id">
                                     <option value="">please select</option>
                                     @foreach (App\Models\Supplier::all() as $supplier)
-                                    <option {{ old('supplier_id',$product->supplier_id)== $supplier->id?'selected':'' }} value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                    <option {{in_array($supplier->id ,old('suppliers',$product->suppliers()->pluck('id')->toArray()) ) ?'selected':'' }} value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                                     @endforeach
                                 </select>
                               </div>

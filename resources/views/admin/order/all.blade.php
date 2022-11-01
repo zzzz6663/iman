@@ -13,7 +13,7 @@
                     </h2>
                 </div>
             </div>
-            <form class="bl" action="{{route('staff.index')}}" method="get">
+            <form class="bl" action="{{ $route }}" method="get">
                 @csrf
                 @method('get')
                 <div class="row align-items-center">
@@ -59,25 +59,21 @@
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>Name</th>
-                      <th>Last Name</th>
-                      <th>Username</th>
-                      <th>Password</th>
-                      <th class="w-1"></th>
+                      <th>brand</th>
+                      <th>quantity</th>
+                      <th>barcode</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($orders as $staff)
-
+                    @foreach ($orders as $order)
                     <tr>
                       <td>{{ $loop->iteration }}</td>
-                      <td>{{ $staff->name }}</td>
-                      <td>{{ $staff->lastname }}</td>
-                      <td>{{ $staff->username }}</td>
-                      <td>{{ $staff->password }}</td>
-                      <td>
-                        <a href="{{ route('staff.edit',$staff->id) }}">Edit</a>
-                      </td>
+                      <td>{{ $order->brand->name }}</td>
+                      <td>{{ $order->quantity }}</td>
+                      <td>{{ $order->product->name }}</td>
+                      {{-- <td>
+                        <a href="{{ route('order.edit',$order->id) }}">Edit</a>
+                      </td> --}}
                     </tr>
                     @endforeach
 
