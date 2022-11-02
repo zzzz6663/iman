@@ -34,6 +34,25 @@ class Product extends Model
     public function branches(){
         return $this->belongsToMany(User::class)->withPivot(['show','traffic_code']);
     }
+    public function orders(){
+        return $this->belongsToMany(Order::class)->withPivot([
+                'brand_id',
+                'traffic_code',
+                'barcode',
+                'description',
+                'width',
+                'height',
+                'unit',
+                'inw',
+                'igw',
+                'volume',
+                'price',
+                'south_code',
+                'euro_number',
+                'quantity',
+            ]);
+    }
+
 
 
 }

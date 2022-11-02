@@ -7,9 +7,12 @@
 .ml1{
     display: inline-block;
     margin-left: 20px;
-}
+} 
 .checkzoom{
     scale: 2
+}
+.nav-item.active{
+    background-color: #000!important;
 }
 .ml-3{
     margin-left: 20px;

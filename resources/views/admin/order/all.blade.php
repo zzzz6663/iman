@@ -59,21 +59,23 @@
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>brand</th>
-                      <th>quantity</th>
-                      <th>barcode</th>
+                      <th>client</th>
+                      <th>products</th>
+                      <th>date</th>
+                      <th>action</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach ($orders as $order)
                     <tr>
-                      <td>{{ $loop->iteration }}</td>
-                      <td>{{ $order->brand->name }}</td>
-                      <td>{{ $order->quantity }}</td>
-                      <td>{{ $order->product->name }}</td>
-                      {{-- <td>
+                      <td>{{ $order->id}}</td>
+                      <td>{{ $order->user->name }}</td>
+                      <td>{{ $order->products->count() }}</td>
+                      <td>{{ $order->created_at }}</td>
+                      <td>
                         <a href="{{ route('order.edit',$order->id) }}">Edit</a>
-                      </td> --}}
+                        <a class="btn btn-secondary  " href="{{ route('order.show',$order->id) }}">Detail</a>
+                      </td>
                     </tr>
                     @endforeach
 

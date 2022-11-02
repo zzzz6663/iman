@@ -20,7 +20,7 @@
     <link href="/manager/dist/css/tabler-vendors.min.css?1666304673" rel="stylesheet"/>
     <link href="/manager/dist/css/demo.min.css?1666304673" rel="stylesheet"/>
     <link href="/css/select2.min.css" rel="stylesheet"/>
-    <link href="/css/css.css" rel="stylesheet"/>
+    <link href="/css/css1.css" rel="stylesheet"/>
 
 
 
@@ -35,7 +35,7 @@
         @include('admin.section.navbar')
         <div class="page-body">
             <div class="container-xl">
-                
+
                 @yield('content')
             </div>
         @include('admin.section.footer')
@@ -60,8 +60,10 @@
 
 <script src="/js/select2.full.min.js"></script>
 
-<script src="{{asset('/js/js.js')}}"></script>
+<script src="{{asset('/js/sw.js')}}"></script>
+<script src="{{asset('/js/js3.js')}}"></script>
 <script src="{{asset('/js/app.js')}}"></script>
 @include('sweetalert::alert')
+
 </body>
 </html>

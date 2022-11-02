@@ -11,6 +11,7 @@
                 Pass Product To
                 {{ $user->username }}
             </h2>
+            <br>
         </div>
     </div>
 
@@ -18,12 +19,22 @@
         @csrf
         @method('get')
         <div class="row align-items-center">
-            {{-- <div class="col-md-6">
-                <div class="form-label">شهرستان</div>
-                <select value="{{old('shahr_id')}}" class="form-select" name="shahr_id">
-                </select>
-            </div> --}}
-            <div class="col-6">
+            <div class="col-md-4">
+                <div class="mb-3"> 
+                    <select class="form-select select2 " name="product" id="product">
+                        <option value="">please select</option>
+                        @foreach ( $products  as $pro )
+                        <option value="{{ $pro->id }}">{{ $pro->name }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                            <span data-branch="{{ $user->id }}" class="add_product btn btn-blue">Add Product</span>
+                  </div>
+            </div>
+            {{-- <div class="col-6">
                 <div class="d-flex ">
                     <input type="search" name="search" value="{{request('search')}}" class="form-control d-inline-block w-9 me-3" placeholder=" search  ">
                     <button class="btn btn-dark w-100">
@@ -37,7 +48,7 @@
 
 
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </form>
@@ -52,6 +63,7 @@
           <thead>
             <tr>
               <th>ID</th>
+              <th>name</th>
               <th>barcode</th>
               <th>price</th>
               <th>south code</th>
@@ -60,42 +72,9 @@
               <th class="ط1"></th>
             </tr>
           </thead>
-          <tbody>
-            @foreach ($products as $product )
-               <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $product ->barcode }}</td>
-                <td>{{ $product ->price }}</td>
-                <td>{{ $product ->south_code }}</td>
-                <td>{{ $product ->euro_number }}</td>
-                <td>
-                    {{ $user->product_traffic_code($product) }}
-                  </td>
-                <td class="">
-                  <div class="form-selectgroup">
-                    <label class="form-check par">
-                        @php
-                             $checked=false;
-                             $status= 'Ready To Added';
-                            $is_exist=  $user->branch_products()->where('product_id', $product->id)->first();
-                            if($is_exist && $is_exist->pivot->show){
-                              $checked=true;
-                              $status= 'Added';
-                            }
-                        @endphp
-
-                        <input  data-u="{{ $user->id }}"  data-p="{{ $product->id }}" {{ $checked?'checked':'' }} class="form-check-input checkzoom m check_code " type="checkbox">
-                        <span  class="form-check-label ml-3 word">
-                            {{ $status }}
-                        </span>
-                      </label>
-                    {{-- <label class="form-selectgroup-item">
-                      <input type="checkbox" name="name" value="CSS" class="form-selectgroup-input">
-                      <span class="form-selectgroup-label check_code">Add</span>
-                    </label> --}}
-                  </div>
-                </td>
-              </tr>
+          <tbody id="tbody_p">
+            @foreach ($user_products as $product )
+                @include('admin.product.product_row')
             @endforeach
 
           </tbody>

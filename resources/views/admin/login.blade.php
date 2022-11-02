@@ -302,5 +302,7 @@
     </div>
 </div>
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/sw.js') }}"></script>
+@include('sweetalert::alert')
 </body>
 </html>

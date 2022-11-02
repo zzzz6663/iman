@@ -16,9 +16,17 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id')->nullable();;
-            $table->unsignedBigInteger('product_id')->nullable();;
-            $table->unsignedBigInteger('supplier_id')->nullable();;
+
+            $table->timestamps();
+        });
+
+        Schema::create('order_product', function (Blueprint $table) {
+            $table->unsignedBigInteger('order_id');
+            // $table->foreign('order_id')->references('id')->on('curts')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id');
+            // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->unsignedBigInteger('brand_id')->nullable();;
+            $table->string('name',2500)->nullable();;
             $table->string('traffic_code',2500)->nullable();;
             $table->string('barcode',2500)->nullable();;
             $table->text('description')->nullable();;
@@ -32,8 +40,8 @@ return new class extends Migration
             $table->string('south_code')->nullable();;
             $table->string('euro_number')->nullable();;
             $table->unsignedBigInteger('quantity')->nullable();;
-            $table->timestamps();
         });
+
     }
 
     /**
@@ -43,6 +51,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('order_product');
         Schema::dropIfExists('orders');
     }
 };

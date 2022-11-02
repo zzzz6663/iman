@@ -30,19 +30,9 @@ class OrderController extends Controller
         if ($request->search) {
             $search = $request->search;
            $orders->where(function ($query) use ($search, $orders) {
-                $orders->where('barcode', 'LIKE', "%{$search}%")
-                ->orWhere('width', 'LIKE', "%{$search}%")
-                ->orWhere('height', 'LIKE', "%{$search}%")
-                ->orWhere('unit', 'LIKE', "%{$search}%")
-                ->orWhere('igw', 'LIKE', "%{$search}%")
-                ->orWhere('volume', 'LIKE', "%{$search}%")
-                ->orWhere('price', 'LIKE', "%{$search}%")
-                ->orWhere('south_code', 'LIKE', "%{$search}%")
-                ->orWhere('euro_number', 'LIKE', "%{$search}%")
-                ->orWhere('quantity', 'LIKE', "%{$search}%");
-                // ->orWhereHas('country', function ($query) use ($search) {
-                //     $query->where('en_name', 'LIKE', "%{$search}%");
-                // });
+                $query->orWhereHas('user', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%{$search}%");
+                });
            });
         }
         $route=route('order.index');
@@ -77,26 +67,33 @@ class OrderController extends Controller
         return  back();
        }
         $data=$request->validate([
-            'product_id'=>'required',
-            'brand_id'=>'required',
-            'quantity'=>'required|numeric|min:0|not_in:0',
+            'products'=>'required',
+            'brands'=>'required',
+            'quantities'=>'required',
         ]);
-        $product=Product::find($data['product_id']);
-        $data['supplier_id']=$product->supplier_id;
-        $data['brand_id']=$product->brand_id;
-        $data['barcode']=$product->barcode;
-        $data['description']=$product->description;
-        $data['width']=$product->width;
-        $data['height']=$product->height;
-        $data['unit']=$product->unit;
-        $data['inw']=$product->inw;
-        $data['igw']=$product->igw;
-        $data['volume']=$product->volume;
-        $data['price']=$product->price;
-        $data['south_code']=$product->south_code;
-        $data['euro_number']=$product->euro_number;
-        $data['traffic_code']=$user->branch->product_traffic_code($product);
-        $user->orders()->create($data);
+        if(count( $data['products']) != count( $data['quantities'])){
+            return redirect()->route('some thing is wrong');
+        }
+       $order= $user->orders()->create();
+        for($i=0; $i<count($data['products']); $i++){
+            $product=Product::find($data['products'][$i]);
+            $info['name']=$product->name;
+            $info['brand_id']=$product->brand_id;
+            $info['barcode']=$product->barcode;
+            $info['description']=$product->description;
+            $info['width']=$product->width;
+            $info['height']=$product->height;
+            $info['unit']=$product->unit;
+            $info['inw']=$product->inw;
+            $info['igw']=$product->igw;
+            $info['volume']=$product->volume;
+            $info['price']=$product->price;
+            $info['south_code']=$product->south_code;
+            $info['euro_number']=$product->euro_number;
+            $info['traffic_code']=$user->branch->product_traffic_code($product);
+            $info['quantity']=$data['quantities'][$i];
+            $order->products()->attach($product->id , $info);
+        }
         alert()->success(' New  order created' );
         return redirect()->route('order.index');
     }
@@ -107,9 +104,9 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Order $order)
     {
-        return view('admin.order.show', compact(['user']));
+        return view('admin.order.show', compact(['order']));
     }
 
     /**
@@ -118,7 +115,7 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $order)
+    public function edit(Order $order)
     {
         return view('admin.order.edit',compact(['order']));
     }
@@ -130,28 +127,46 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $order)
+    public function update(Request $request,Order $order)
     {
         $user=auth()->user();
-        if( $user->role !='branch'){
-        alert()->error('You must be Branch');
+       if( $user->role !='client'){
+        alert()->error('You must be Client');
         return  back();
+       }
+        $data=$request->validate([
+            'products'=>'required',
+            'brands'=>'required',
+            'quantities'=>'required',
+        ]);
+        if(count( $data['products']) != count( $data['quantities'])){
+            return redirect()->route('some thing is wrong');
         }
-        if( $user->id !=$order->branch_id){
-        alert()->error('this order must be Branch');
-        return  back();
+
+        foreach($order->products as $pro){
+            $order->products()->detach($pro->id ,[]);
         }
-      $data=$request->validate([
-        'username'=>'required|min:3|unique:users,username,'.$order->id,
-        'company'=>'required|min:3',
-        'person'=>'required|min:3',
-        'phone'=>'required|min:3|unique:users,phone,'.$order->id,
-        'tax'=>'required|min:3|unique:users,tax,'.$order->id,
-        'country_id'=>'required|exists:countries,id',
-        'address'=>'required|min:3|unique:users',
-        'password'=>'required|min:3',
-    ]);
-    $order->update($data);
+        for($i=0; $i<count($data['products']); $i++){
+            $product=Product::find($data['products'][$i]);
+            $order->products()->detach($product->id ,[]);
+
+            $info['name']=$product->name;
+            $info['brand_id']=$product->brand_id;
+            $info['barcode']=$product->barcode;
+            $info['description']=$product->description;
+            $info['width']=$product->width;
+            $info['height']=$product->height;
+            $info['unit']=$product->unit;
+            $info['inw']=$product->inw;
+            $info['igw']=$product->igw;
+            $info['volume']=$product->volume;
+            $info['price']=$product->price;
+            $info['south_code']=$product->south_code;
+            $info['euro_number']=$product->euro_number;
+            $info['traffic_code']=$user->branch->product_traffic_code($product);
+            $info['quantity']=$data['quantities'][$i];
+            $order->products()->attach($product->id , $info);
+        }
     alert()->success('   order updated' );
     return redirect()->route('order.index');
     }

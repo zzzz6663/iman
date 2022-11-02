@@ -27,16 +27,31 @@ class Order extends Model
         'euro_number',
         'quantity',
     ];
-    public function users(){
-        return $this->belongsTo(User::class);
+    public function user(){
+        return $this->belongsTo(User::class,'client_id','id');
         // return $this->belongsTo(User::class,'id','client_id');
     }
     public function brand(){
         return $this->belongsTo(Brand::class);
     }
         // return $this->belongsTo(User::class,'id','client_id');
-    public function product(){
-        return $this->belongsTo(Product::class);
+    public function products(){
+        return $this->belongsToMany(Product::class)->withPivot([
+            'brand_id',
+            'traffic_code',
+            'barcode',
+            'description',
+            'width',
+            'height',
+            'unit',
+            'inw',
+            'igw',
+            'volume',
+            'price',
+            'south_code',
+            'euro_number',
+            'quantity',
+        ]);;
         // return $this->belongsTo(User::class,'id','client_id');
     }
 }

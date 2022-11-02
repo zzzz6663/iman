@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Artisan;
 use RealRashid\SweetAlert\Facades\Alert;
 use TimeHunter\LaravelGoogleReCaptchaV2\Validations\GoogleReCaptchaV2ValidationRule;
 
+use function Termwind\render;
+
 class AdminController extends Controller
 {
 
@@ -108,8 +110,45 @@ Artisan::call('cache:clear');
 
 
 
+   public function remove_product(User $user ,Request $request)
+   {
+    $product=Product::find($request->product);
+    $user->branch_products()->updateExistingPivot($product->id, array('show' => '0'), false);
+    return response()->json([
+        'all' => $request->all(),
+        'status' => 1
+    ]);
+   }
+   public function add_product(User $user ,Request $request)
+   {
+    $html='';
+    $product=Product::find($request->product);
+    if(!$product){
+        $status=0;
+    }else{
+        if( in_array($product->id,$user->branch_products()->wherePivot('show','1')->pluck('id')->toArray())){
+            $status=2;
+        }else{
+            if(in_array($product->id,$user->branch_products()->wherePivot('show','0')->pluck('id')->toArray())){
+                $user->branch_products()->updateExistingPivot($product->id, array('show' => '1'), false);
+            }else{
+                $user->branch_products()->attach($product->id,['show'=>1]);
+            }
+            $status=1;
+            $html=  view('admin.product.product_row',compact(['product','user']))->render();
+        }
+    }
+
+
+      return response()->json([
+               'all' => $request->all(),
+               'status' => $status,
+               'html' => $html,
+           ]);
+   }
    public function pass_products(User $user ,Request $request)
    {
+
 
 
        if($user->role!='branch'){
@@ -146,25 +185,26 @@ Artisan::call('cache:clear');
        }
 
        $products = Product::query();
-       if ($request->search) {
-           $search = $request->search;
-          $products->where(function ($query) use ($search, $products) {
-               $products->where('barcode', 'LIKE', "%{$search}%")
-               ->orWhere('traffic_code', 'LIKE', "%{$search}%")
-               ->orWhere('width', 'LIKE', "%{$search}%")
-               ->orWhere('price', 'LIKE', "%{$search}%")
-               ->orWhereHas('brand', function ($query) use ($search) {
-                   $query->where('name', 'LIKE', "%{$search}%");
-               })
-               ->orWhereHas('supplier', function ($query) use ($search) {
-                   $query->where('name', 'LIKE', "%{$search}%");
-               });
-          })->
-          whereHas('branches', function ($query) use($user) {
-           $query->where('branch_id', $user->id);
-       });;
-       }
-       $products = $products->latest()->paginate(10);
-       return view('admin.product.pass_products',compact(['user','products']));
+       $user_products =$user->branch_products()->wherePivot('show','1')->paginate(10);
+    //    if ($request->search) {
+    //        $search = $request->search;
+    //       $products->where(function ($query) use ($search, $products) {
+    //            $products->where('barcode', 'LIKE', "%{$search}%")
+    //            ->orWhere('traffic_code', 'LIKE', "%{$search}%")
+    //            ->orWhere('width', 'LIKE', "%{$search}%")
+    //            ->orWhere('price', 'LIKE', "%{$search}%")
+    //            ->orWhereHas('brand', function ($query) use ($search) {
+    //                $query->where('name', 'LIKE', "%{$search}%");
+    //            })
+    //            ->orWhereHas('supplier', function ($query) use ($search) {
+    //                $query->where('name', 'LIKE', "%{$search}%");
+    //            });
+    //       });
+    // //       whereHas('branches', function ($query) use($user) {
+    // //        $query->where('branch_id', $user->id);
+    // //    });;
+    //    }
+       $products = $products->latest()->get();
+       return view('admin.product.pass_products',compact(['user','products','user_products']));
    }
 }

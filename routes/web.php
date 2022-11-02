@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::namespace('admin')->middleware('web')->group(function () {
-    Route::post('/check_login', 'AdminController@check_login')->name('admin.check.login');
+    Route::post('/check_login', 'AdminController@check_loegin')->name('admin.check.login');
     Route::get('/clear', 'AdminController@clear');
 
 Route::get('/', 'AdminController@login')->name('login');
@@ -24,6 +24,8 @@ Route::get('/', 'AdminController@login')->name('login');
 });
 Route::prefix('admin')->namespace('admin')->middleware(['auth'])->group(function () {
     // login admin
+    Route::post('/remove_product/{user}','AdminController@remove_product')->name('remove.product')->middleware(['role:admin']);
+    Route::post('/add_product/{user}','AdminController@add_product')->name('add.product')->middleware(['role:admin']);
     Route::get('/client_orders/{user}','ClientController@client_orders')->name('client.orders')->middleware(['role:branch|admin']);
     Route::post('/get_product/{brand}','ClientController@get_product')->name('get.product')->middleware(['role:client']);
     Route::any('/pass_products/{user}','AdminController@pass_products')->name('pass.products')->middleware(['role:admin']);

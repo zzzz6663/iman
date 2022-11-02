@@ -69,6 +69,7 @@
                     @foreach ($suppliers as $supplier)
                     <tr>
                       <td>{{ $loop->iteration }}</td>
+                      <td>{{ $supplier->name }}</td>
                       <td>{{ $supplier->email }}</td>
                       <td>{{ $supplier->phone }}</td>
                       <td>{{ $supplier->address }}</td>

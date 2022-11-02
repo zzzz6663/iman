@@ -4,7 +4,13 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
+            @if (auth()->user()->role=='admin')
+            <img src="/media/company/{{ App\Models\User::where('role','company')->first()->logo }}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+
+            @else
             <img src="{{ auth()->user()->logo_img() }}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+
+            @endif
             <br>
         </h1>
         <h1 class="navbar-brand navbar-brand-autodark">
